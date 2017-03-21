@@ -1,38 +1,86 @@
 call plug#begin('~/.vim/plugged')
 
 " Plugs {
-  " ctrl-p is a fuzzy file finder.
-  Plug 'kien/ctrlp.vim'
-  " airline is a better status line and a tab-bar for nvim.
-  Plug 'bling/vim-airline'
-  Plug 'fatih/vim-go'
-  Plug 'mileszs/ack.vim'
-  Plug 'mattn/webapi-vim'
-  "Plug 'scrooloose/syntastic'
-  Plug 'w0rp/ale'
-  Plug 'rust-lang/rust.vim'
-  Plug 'mattn/gist-vim'
-  Plug 'scrooloose/nerdtree'
-  Plug 'digitaltoad/vim-pug'
-  Plug 'tpope/vim-git'
-  Plug 'colepeters/spacemacs-theme.vim'
-  Plug 'wakatime/vim-wakatime'
-  Plug 'liuchengxu/space-vim-dark'
-  Plug 'Shougo/neocomplete.vim'
-  Plug 'hdima/python-syntax'
-  Plug 'zanglg/nova.vim'
-  Plug 'tpope/vim-fugitive'
-  "Plug 'python-mode/python-mode'
-  Plug 'tweekmonster/django-plus.vim'
-  Plug 'gmarik/ingretu'
+" Language
+Plug 'scrooloose/syntastic'             " Syntax checking hacks
+Plug 'scrooloose/nerdcommenter'         " Intensely orgasmic commenting
+"Plug 'fatih/vim-go'                     " Go development plugin
+Plug 'sheerun/vim-polyglot'             " A solid language pack for Vim
+"Plug 'rust-lang/rust.vim'               "Vim configuration for Rust
+
+" Completion
+Plug 'valloric/youcompleteme'           " A code completion engine
+Plug 'honza/vim-snippets'               " Snippets for various programming languages
+Plug 'mattn/emmet-vim'                  " Emmet for Vim
+
+" Code display
+Plug 'pangloss/vim-javascript'          " Vastly improved JavaScript indentaion and syntax support
+Plug 'nathanaelkane/vim-indent-guides'  " Visually displaying indent level in code
+Plug 'flazz/vim-colorschemes'           " One colorscheme pack to rule them all
+Plug 'joshdick/onedark.vim'             " Inspired by Atom's One Dark theme
+"Plug 'colepeters/spacemacs-theme.vim'
+"Plug 'liuchengxu/space-vim-dark'
+"Plug 'zanglg/nova.vim'
+"Plug 'gmarik/ingretu'
+
+" Integrations
+Plug 'tpope/vim-fugitive'               " Git wrapper so awesome, it should be illegal
+Plug 'mileszs/ack.vim'                  " Perl module / CLI script ack
+Plug 'tpope/vim-commentary'             " Comment stuff out
+"Plug 'w0rp/ale'                         " Asynchronous Lint Engine
+
+" Interface
+Plug 'ctrlpvim/ctrlp.vim'               " Fuzzy file finder
+Plug 'vim-airline/vim-airline'          " Status line and tab bar
+Plug 'airblade/vim-gitgutter'           " A Vim plugin which shows a git diff in the 'gutter
+Plug 'majutsushi/tagbar'                " Class outline viewer
+
+" Commands
+Plug 'easymotion/vim-easymotion'        " File navigation
+Plug 'tpope/vim-surround'               " Quoting/parenthesizing made simple
+Plug 'terryma/vim-multiple-cursors'     " True Sublime Text style multiple selectors for Vim
+
+" Other
+Plug 'scrooloose/nerdtree'              " A tree explorer for vim
+Plug 'godlygeek/tabular'                " Vim script for filtering and alignment
+Plug 'tpope/vim-sensible'               " Default everyone can agree on
+Plug 'editorconfig/editorconfig-vim'    " EditorConfig plugin for Vim
+Plug 'mattn/webapi-vim'                 " Interface to Web API
+
+" Obsolete
+"Plug 'mattn/gist-vim'
+"Plug 'digitaltoad/vim-pug'
+"Plug 'tpope/vim-git'
+"Plug 'wakatime/vim-wakatime'
+"Plug 'Shougo/neocomplete.vim'
+"Plug 'hdima/python-syntax'
+"Plug 'python-mode/python-mode'
+"Plug 'tweekmonster/django-plus.vim'
 call plug#end()
 
+"Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
+if (empty($TMUX))
+    if (has("nvim"))
+        "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+        let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+    endif
+    "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+    "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+    " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+    if (has("termguicolors"))
+        set termguicolors
+    endif
+endif
+
+colorscheme onedark
 
 if has('autocmd')
-  filetype plugin indent on
+    filetype plugin indent on
 endif
 if has('syntax') && !exists('g:syntax_on')
-  syntax enable
+    syntax enable
 endif
 
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
@@ -41,226 +89,227 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 let mapleader="\<SPACE>"
 
 " General {
-  set backspace=indent,eol,start      " Allow backspace over everything in insert mode.
-  set noswapfile
-  set smarttab
-  set lazyredraw
-  set secure
-  set termguicolors
-  set exrc
-  set ttyfast
-  set noautoindent        " I indent my code myself.
-  set nocindent           " I indent my code myself.
-  set omnifunc=syntaxcomplete#Complete
+set backspace=indent,eol,start      " Allow backspace over everything in insert mode.
+set noswapfile
+set smarttab
+set lazyredraw
+set secure
+set termguicolors
+set exrc
+set ttyfast
+set omnifunc=syntaxcomplete#Complete
 
-  "set smartindent        " Or I let the smartindent take care of it.
+set nrformats-=octal
 
-  set nrformats-=octal
-
-  set ttimeout
-  set ttimeoutlen=100
+set ttimeout
+set ttimeoutlen=100
 " }
-" Search {
-  set hlsearch            " Highlight search results.
-  set ignorecase          " Make searching case insensitive
-  set smartcase           " ... unless the query has capital letters.
-  set incsearch           " Incremental search.
-  set gdefault            " Use 'g' flag by default with :s/foo/bar/.
-  set magic               " Use 'magic' patterns (extended regular expressions).
 
+" Search {
+set hlsearch            " Highlight search results.
+set ignorecase          " Make searching case insensitive
+set smartcase           " ... unless the query has capital letters.
+set incsearch           " Incremental search.
+set gdefault            " Use 'g' flag by default with :s/foo/bar/.
+set magic               " Use 'magic' patterns (extended regular expressions).
 " }
 
 " Formatting {
-  set showcmd             " Show (partial) command in status line.
-  set showmatch           " Show matching brackets.
-  set showmode            " Show current mode.
-  set ruler               " Show the line and column numbers of the cursor.
-  set number              " Show the line numbers on the left side.
-  set formatoptions+=o    " Continue comment marker in new lines.
-  set textwidth=0         " Hard-wrap long lines as you type them.
-  set expandtab           " Insert spaces when TAB is pressed.
-  set tabstop=2           " Render TABs using this many spaces.
-  set shiftwidth=2        " Indentation amount for < and > commands.
-  "duplicate line cmd-d
-  map <D-d> yyp
-  set noerrorbells        " No beeps.
-  set modeline            " Enable modeline.
-  set esckeys             " Cursor keys in insert mode.
-  set linespace=0         " Set line-spacing to minimum.
-  set nojoinspaces        " Prevents inserting two spaces after punctuation on a join (J)
-  set list
-  set listchars=tab:›\ ,eol:¬,trail:⋅,space:⋅
-  set splitbelow          " Horizontal split below current.
-  set splitright          " Vertical split to right of current.
-  set autoread            " If file updates, load automatically.
-  au! BufWritePost .vimrc so %
-  au! BufWritePost .gvimrc so %
+set showcmd             " Show (partial) command in status line.
+set showmatch           " Show matching brackets.
+set showmode            " Show current mode.
+set ruler               " Show the line and column numbers of the cursor.
+set number              " Show the line numbers on the left side.
+set formatoptions+=o    " Continue comment marker in new lines.
+set textwidth=0         " Hard-wrap long lines as you type them.
+set wrapmargin=0        " No word wrap margin
+set whichwrap+=<,>,h,l,[,] " Pressing left/right cursor will move to previous/next line.
+set expandtab           " Insert spaces when TAB is pressed.
+set softtabstop=4       " Render TABs using this many spaces.
+set shiftwidth=4        " Indentation amount for < and > commands.
+set autoindent          " Automatic indentation
+set smartindent         " Does the right thing (mostly)
+set cindent             " Stricter indentation rules for C
 
-  set display+=lastline
-  set nostartofline       " Do not jump to first character with page commands.
+"duplicate line cmd-d
+map <D-d> yyp
+set noerrorbells        " No beeps.
+set modeline            " Enable modeline.
+set esckeys             " Cursor keys in insert mode.
+set linespace=3         " Set line-spacing to minimum.
+set nojoinspaces        " Prevents inserting two spaces after punctuation on a join (J)
+set list
+set listchars=tab:›\ ,eol:¬,trail:⋅,space:⋅
+set splitbelow          " Horizontal split below current.
+set splitright          " Vertical split to right of current.
+set autoread            " If file updates, load automatically.
+au! BufWritePost .vimrc so %
+au! BufWritePost .gvimrc so %
 
-  if &encoding ==# 'latin1' && has('gui_running')
-    set encoding=utf-8
-  endif
+set display+=lastline
+set nostartofline       " Do not jump to first character with page commands.
 
-  " Tell Vim which characters to show for expanded TABs,
-  " trailing whitespace, and end-of-lines. VERY useful!
-  if &listchars ==# 'eol:$'
+set encoding=utf-8  " The encoding displayed.
+set fileencoding=utf-8  " The encoding written to file.
+
+" Tell Vim which characters to show for expanded TABs,
+" trailing whitespace, and end-of-lines. VERY useful!
+if &listchars ==# 'eol:$'
     set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
-  endif
+endif
 
-  " Also highlight all tabs and trailing whitespace characters.
-  highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
-  match ExtraWhitespace /\s\+$\|\t/
+" Also highlight all tabs and trailing whitespace characters.
+highlight ExtraWhitespace ctermbg=darkgreen guibg=darkgreen
+match ExtraWhitespace /\s\+$\|\t/
 
 " }
 
 " Configuration {
-  if has('path_extra')
+if has('path_extra')
     setglobal tags-=./tags tags^=./tags;
-  endif
+endif
 
 
-  " Remove special characters for filename
-  set isfname-=:
-  set isfname-==
-  set isfname-=+
+" Remove special characters for filename
+set isfname-=:
+set isfname-==
+set isfname-=+
 
-  " Map ; to :
-  nnoremap ; :
+" Map ; to :
+nnoremap ; :
 
-  if &history < 1000
-    set history=1000      " Number of lines in command history.
-  endif
-  if &tabpagemax < 50
+if &history < 1000
+    set history=10000      " Number of lines in command history.
+endif
+if &tabpagemax < 50
     set tabpagemax=50     " Maximum tab pages.
-  endif
+endif
 
-  if &undolevels < 200
+if &undolevels < 200
     set undolevels=200    " Number of undo levels.
-  endif
+endif
 
-  " Path/file expansion in colon-mode.
-  set wildmenu
-  set wildmode=list:longest
-  set wildchar=<TAB>
+" Path/file expansion in colon-mode.
+set wildmenu
+set wildmode=list:longest
+set wildchar=<TAB>
 
-  if !empty(&viminfo)
+if !empty(&viminfo)
     set viminfo^=!        " Write a viminfo file with registers.
-  endif
-  set sessionoptions-=options
+endif
+set sessionoptions-=options
 
-  " Allow color schemes to do bright colors without forcing bold.
-  if &t_Co == 8 && $TERM !~# '^linux'
+" Allow color schemes to do bright colors without forcing bold.
+if &t_Co == 8 && $TERM !~# '^linux'
     set t_Co=16
-  endif
+endif
 
-  autocmd BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+autocmd BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 
 
-  " Remove trailing spaces before saving text files
-  " http://vim.wikia.com/wiki/Remove_trailing_spaces
-  autocmd BufWritePre * :call StripTrailingWhitespace()
-  function! StripTrailingWhitespace()
+" Remove trailing spaces before saving text files
+" http://vim.wikia.com/wiki/Remove_trailing_spaces
+autocmd BufWritePre * :call StripTrailingWhitespace()
+function! StripTrailingWhitespace()
     if !&binary && &filetype != 'diff'
-      normal mz
-      normal Hmy
-      if &filetype == 'mail'
-  " Preserve space after e-mail signature separator
-        %s/\(^--\)\@<!\s\+$//e
-      else
-        %s/\s\+$//e
-      endif
-      normal 'yz<Enter>
-      normal `z
+        normal mz
+        normal Hmy
+        if &filetype == 'mail'
+            " Preserve space after e-mail signature separator
+            %s/\(^--\)\@<!\s\+$//e
+        else
+            %s/\s\+$//e
+        endif
+        normal 'yz<Enter>
+        normal `z
     endif
-  endfunction
+endfunction
 
-  " Diff options
-  set diffopt+=iwhite
+" Diff options
+set diffopt+=iwhite
 
-  "Enter to go to EOF and backspace to go to start
-  nnoremap <CR> G
-  nnoremap <BS> gg
-  " Stop cursor from jumping over wrapped lines
-  nnoremap j gj
-  nnoremap k gk
-  " Make HOME and END behave like shell
-  inoremap <C-E> <End>
-  inoremap <C-A> <Home>
+"Enter to go to EOF and backspace to go to start
+nnoremap <CR> G
+nnoremap <BS> gg
+" Stop cursor from jumping over wrapped lines
+nnoremap j gj
+nnoremap k gk
+" Make HOME and END behave like shell
+inoremap <C-E> <End>
+inoremap <C-A> <Home>
 " }
 
 " GUI Options {
-  set guioptions-=m " Removes top menubar
-  set guioptions-=T " Removes top toolbar
-  set guioptions-=r " Removes right hand scroll bar
-  set go-=L " Removes left hand scroll bar
+set guioptions-=m " Removes top menubar
+set guioptions-=T " Removes top toolbar
+set guioptions-=r " Removes right hand scroll bar
+set go-=L " Removes left hand scroll bar
 
-  "Toggle menubar
-  nnoremap <leader>m :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
+"Toggle menubar
+nnoremap <leader>m :if &go=~#'m'<Bar>set go-=m<Bar>else<Bar>set go+=m<Bar>endif<CR>
 
-  " Relative numbering
-  function! NumberToggle()
+" Relative numbering
+function! NumberToggle()
     if(&relativenumber == 1)
-      set nornu
-      set number
+        set nornu
+        set number
     else
-      set rnu
+        set rnu
     endif
-  endfunc
+endfunc
 
-  " Toggle between normal and relative numbering.
-  nnoremap <leader>r :call NumberToggle()<cr>
+" Toggle between normal and relative numbering.
+nnoremap <leader>r :call NumberToggle()<cr>
 
-  " Sets a status line. If in a Git repository, shows the current branch.
-  " Also shows the current file name, line and column number.
- if has('statusline')
-      set laststatus=2
+" Sets a status line. If in a Git repository, shows the current branch.
+" Also shows the current file name, line and column number.
+if has('statusline')
+    set laststatus=2
 
-      " Broken down into easily includeable segments
-      set statusline=%<%f\                     " Filename
-      set statusline+=%w%h%m%r                 " Options
-      "set statusline+=%{fugitive#statusline()} " Git Hotness
-      set statusline+=\ [%{&ff}/%Y]            " Filetype
-      set statusline+=\ [%{getcwd()}]          " Current dir
-      set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
-  endif
+    " Broken down into easily includeable segments
+    set statusline=%<%f\                     " Filename
+    set statusline+=%w%h%m%r                 " Options
+    "set statusline+=%{fugitive#statusline()} " Git Hotness
+    set statusline+=\ [%{&ff}/%Y]            " Filetype
+    set statusline+=\ [%{getcwd()}]          " Current dir
+    set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+endif
 " }
 
 " Keybindings {
-  " Save file
-  nnoremap <Leader>w :w<CR>
-  "Copy and paste from system clipboard
-  vmap <Leader>y "+y
-  vmap <Leader>d "+d
-  nmap <Leader>p "+p
-  nmap <Leader>P "+P
-  vmap <Leader>p "+p
-  vmap <Leader>P "+P
-  nmap <F8> :TagbarToggle<CR>
+" Save file
+nnoremap <Leader>w :w<CR>
+"Copy and paste from system clipboard
+vmap <Leader>y "+y
+vmap <Leader>d "+d
+nmap <Leader>p "+p
+nmap <Leader>P "+P
+vmap <Leader>p "+p
+vmap <Leader>P "+P
+nmap <F8> :TagbarToggle<CR>
 " }
 
 " Plug Settings {
-  " Airline {
-    let g:airline#extensions#tabline#enabled = 2
-    let g:airline#extensions#tabline#fnamemod = ':t'
-    let g:airline#extensions#tabline#left_sep = ' '
-    let g:airline#extensions#tabline#left_alt_sep = '|'
-    let g:airline#extensions#tabline#right_sep = ' '
-    let g:airline#extensions#tabline#right_alt_sep = '|'
-    let g:airline_left_sep = ' '
-    let g:airline_left_alt_sep = '|'
-    let g:airline_right_sep = ' '
-    let g:airline_right_alt_sep = '|'
-  " }
-  " CtrlP {
-    " Open file menu
-    nnoremap <Leader>o :CtrlP<CR>
-    " Open buffer menu
-    nnoremap <Leader>b :CtrlPBuffer<CR>
-    " Open most recently used files
-    nnoremap <Leader>f :CtrlPMRUFiles<CR>
-  " }
+" Airline {
+let g:airline#extensions#tabline#enabled = 2
+let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#right_sep = ' '
+let g:airline#extensions#tabline#right_alt_sep = '|'
+let g:airline_left_sep = ' '
+let g:airline_left_alt_sep = '|'
+let g:airline_right_sep = ' '
+let g:airline_right_alt_sep = '|'
+" }
+" CtrlP {
+" Open file menu
+nnoremap <Leader>o :CtrlP<CR>
+" Open buffer menu
+nnoremap <Leader>b :CtrlPBuffer<CR>
+" Open most recently used files
+nnoremap <Leader>f :CtrlPMRUFiles<CR>
+" }
 " }
 
 
@@ -291,11 +340,11 @@ au FileType go nmap <Leader>b <Plug>(go-build)
 au FileType go nmap <Leader>t <Plug>(go-test)
 au FileType go nmap gd <Plug>(go-def-tab)
 augroup filetype
- au! BufRead,BufNewFile *.proto setfiletype proto
+    au! BufRead,BufNewFile *.proto setfiletype proto
 augroup end
 " Ack.vim
 if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
+    let g:ackprg = 'ag --vimgrep'
 endif
 
 
@@ -324,55 +373,47 @@ nmap <C-c> :NERDTreeCWD<CR>
 noremap <Leader>h :<C-u>split<CR>
 noremap <Leader>v :<C-u>vsplit<CR>
 
-
-"Indent
-" Indent lines with cmd+[ and cmd+]
-nmap <D-]> >>
-nmap <D-[> <<
-vmap <D-[> <gv
-vmap <D-]> >gv
-
 " Neocomplete related settings
-let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
+"let g:acp_enableAtStartup = 0
+"let g:neocomplete#enable_at_startup = 1
 " Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
+"let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
+"let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+"let g:neocomplete#sources#syntax#min_keyword_length = 3
+"let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
+"let g:neocomplete#sources#dictionary#dictionaries = {
+"            \ 'default' : '',
+"            \ 'vimshell' : $HOME.'/.vimshell_hist',
+"            \ 'scheme' : $HOME.'/.gosh_completions'
+"            \ }
 
 " Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+"if !exists('g:neocomplete#keyword_patterns')
+"    let g:neocomplete#keyword_patterns = {}
+"endif
+"let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
 " Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
+"inoremap <expr><C-g>     neocomplete#undo_completion()
+"inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " Recommended key-mappings.
 " <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
+    return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+    " For no inserting <CR> key.
+    "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+"inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+"inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -382,9 +423,9 @@ autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
+"if !exists('g:neocomplete#sources#omni#input_patterns')
+"    let g:neocomplete#sources#omni#input_patterns = {}
+"endif
 
 " Make vim faster in iterm/Terminal.app
 set synmaxcol=128
@@ -392,9 +433,9 @@ syntax sync minlines=256
 let g:syntastic_python_checkers = ['mypy']
 
 let g:ale_linters = {
-\   'javascript': ['eslint'],
-\   'python': ['mypy'],
-\}
+            \   'javascript': ['eslint'],
+            \   'python': ['mypy'],
+            \}
 
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0

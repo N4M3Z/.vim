@@ -1,34 +1,58 @@
-"http://superuser.com/questions/319591/how-can-i-prevent-macvim-from-showing-os-x-find-replace-dialog-when-pressing-co
 if has("gui_macvim")
-  " Disable print shortcut for 'goto anything...'
+    " Disable print shortcut for 'goto anything...'
     macmenu File.Print key=<nop>
 
-  " Disable new tab shortcut for 'goto file...'
-  macmenu File.New\ Tab key=<nop>
+    " Disable new tab shortcut for 'goto file...'
+    macmenu File.New\ Tab key=<nop>
 
-  " Move  with cmd+alt
-  macm Window.Select\ Previous\ Tab  key=<D-M-LEFT>
-  macm Window.Select\ Next\ Tab	   key=<D-M-RIGHT>
+    " Move with cmd+shift as is default for OSX
+    macm Window.Select\ Previous\ Tab  key=<D-S-LEFT>
+    macm Window.Select\ Next\ Tab    key=<D-S-RIGHT>
 
-  " create a new menu item with title "New File" and bind it to cmd+n
-  " new files will be created on a new tab
-  an 10.190 File.New\ File <nop>
-  macmenu File.New\ File action=addNewTab: key=<D-n>
+    " Press Ctrl-Tab to switch between open tabs (like browser tabs) to
+    " the right side. Ctrl-Shift-Tab goes the other way.
+    map <D-S-RIGHT> :tabnext<CR>
+    map <D-S-LEFT> :tabprev<CR>
 
-endif
+    " create a new menu item with title "New File" and bind it to cmd+n
+    " new files will be created on a new tab
+    an 10.190 File.New\ File <nop>
+    macmenu File.New\ File action=addNewTab: key=<D-n>
 
-if has("gui_macvim")
-  set guioptions=aAce
-  let macvim_hig_shift_movement = 1
-  set fuoptions=maxvert,maxhorz
-  set noballooneval
-  " Automatically resize splits
-  " when resizing MacVim window
-  autocmd VimResized * wincmd =
-  macmenu File.New\ Tab key=<nop>
+    set guioptions=aAce
+    let macvim_hig_shift_movement=1
+    set fuoptions=maxvert,maxhorz
+    set noballooneval
+    " Automatically resize splits
+    " when resizing MacVim window
+    autocmd VimResized * wincmd =
+    macmenu File.New\ Tab key=<nop>
+
+    "Indent
+    " Indent lines with cmd+[ and cmd+]
+    nmap <D-]> >>
+    nmap <D-[> <<
+    vmap <D-[> <gv
+    vmap <D-]> >gv
+
+    " Switch to specific tab numbers with Command-number
+    noremap <D-1> :tabn 1<CR>
+    noremap <D-2> :tabn 2<CR>
+    noremap <D-3> :tabn 3<CR>
+    noremap <D-4> :tabn 4<CR>
+    noremap <D-5> :tabn 5<CR>
+    noremap <D-6> :tabn 6<CR>
+    noremap <D-7> :tabn 7<CR>
+    noremap <D-8> :tabn 8<CR>
+    noremap <D-9> :tabn 9<CR>
+    " Command-0 goes to the last tab
+    noremap <D-0> :tablast<CR>
+
+    " Duplicate line
+    map <D-d> yyp
+
 elseif has("gui_gtk2")
-
-  set guioptions-=T
+    set guioptions-=T
 endif
 set transparency=0
 
@@ -38,6 +62,10 @@ set background=dark
 set transparency=4
 set termguicolors
 colorscheme spacemacs-theme
-set guifont=Inconsolata:h14
+set guifont=Monaco:h16
 let g:solarized_termcolors=256
-let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_at_startup=1
+
+" Highlight words using shift + mouse click
+set mousemodel=extend
+
