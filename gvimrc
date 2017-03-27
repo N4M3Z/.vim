@@ -61,7 +61,7 @@ syntax on
 set background=dark
 set transparency=4
 set termguicolors
-colorscheme spacemacs-theme
+"colorscheme spacemacs-theme
 set guifont=Monaco:h16
 let g:solarized_termcolors=256
 let g:neocomplete#enable_at_startup=1
